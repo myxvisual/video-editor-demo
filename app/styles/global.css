@@ -1,0 +1,63 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+*:after,
+*:before {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: none;
+}
+
+a {
+  color: #0078D7;
+}
+
+/* 
+a:visited {
+  color: #4ba7f3;
+} */
+
+body {
+  font-family: "Segoe UI", "Microsoft YaHei", "Open Sans", sans-serif, "Hiragino Sans GB", Arial, "Lantinghei SC", "5FAE8F6F96C59ED1", "STHeiti", "WenQuanYi Micro Hei", SimSun;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.6;
+  background: #111;
+  color: #fff;
+}
+
+input,
+textarea {
+  box-shadow: none;
+  border-radius: none;
+}
+
+* {
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+
+*::-webkit-scrollbar {
+  -webkit-appearance: none
+}
+
+*::-webkit-scrollbar:vertical {
+  width: 6px;
+}
+
+*::-webkit-scrollbar:horizontal {
+  height: 6px
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: rgba(95, 95, 95, 0.5);
+}
