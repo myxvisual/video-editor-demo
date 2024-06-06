@@ -18,6 +18,14 @@ a {
   color: #0078D7;
 }
 
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}
+
 /* 
 a:visited {
   color: #4ba7f3;
