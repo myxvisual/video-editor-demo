@@ -1,3 +1,4 @@
+import { elementTime2style, setResizeMousedown } from "~/hooks/useResizeElement";
 import { addStyles } from "~/styles/cssManager";
 import { VideoProject } from "~/utils/VideoProjectTypes";
 
@@ -8,26 +9,49 @@ export interface TimelineEditorProps {
 
 export const TimelineEditor = (props: TimelineEditorProps) => {
   const cls = getClasses();
+
   return (
     <div className={cls.root}>
       <div className={cls.tracksWrapper}>
         <div className={cls.emptyTracks} />
         <div className={cls.tracks}>
-          {props.videoProjectData?.tracks?.map((track, index) => {
+          {props.videoProjectData?.tracks?.map((track, trackIndex) => {
             return (
-              <div key={index} className={cls.track}>
+              <div key={trackIndex} className={cls.track}>
                 {track.elements.map((element, index) => {
+
+                  const [lMouseDown] = setResizeMousedown(
+                    props.videoProjectData,
+                    props.setVideoProjectData,
+                    true,
+                    trackIndex,
+                    index,
+                  );
+
+                  const [rMouseDown] = setResizeMousedown(
+                    props.videoProjectData,
+                    props.setVideoProjectData,
+                    false,
+                    trackIndex,
+                    index,
+                  );
+
                   return (
                     <div
                       key={index}
                       className={cls.element}
-                      style={{
-                        left: element.startTime / props.videoProjectData.duration * 100 + "%",
-                        width: (element.endTime - element.startTime) / props.videoProjectData.duration * 100 + "%",
-                      }}
+                      style={elementTime2style(element, props.videoProjectData.duration)}
                     >
-                      <div className={cls.handlerL} />
-                      <div className={cls.handlerR} />
+                      <div
+                        className={cls.handlerL}
+                        onMouseDown={lMouseDown}
+                        role="presentation"
+                      />
+                      <div
+                        className={cls.handlerR}
+                        onMouseDown={rMouseDown}
+                        role="presentation"
+                      />
                     </div>
                   );
                 })}

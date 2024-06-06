@@ -7,7 +7,7 @@
     "build": "remix vite:build",
     "dev": "remix vite:dev",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
-    "start": "remix-serve ./build/server/index.js",
+    "preview": "vite preview",
     "typecheck": "tsc"
   },
   "dependencies": {
@@ -17,6 +17,8 @@
     "isbot": "^4.1.0",
     "koss": "^1.0.7",
     "react": "^18.2.0",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
@@ -33,8 +35,6 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "typescript": "^5.1.6",
     "vite": "^5.1.0",
-    "react-dnd": "^15.1.1",
-    "react-dnd-html5-backend": "^15.1.2",
     "vite-tsconfig-paths": "^4.2.1"
   },
   "engines": {
