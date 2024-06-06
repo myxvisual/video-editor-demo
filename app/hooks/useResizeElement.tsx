@@ -57,10 +57,16 @@ export const setResizeMousedown = (
       if (newElement.startTime > element.endTime) {
         newElement.startTime = element.endTime - MIN_DURATION;
       }
+      if (newElement.startTime < 0) {
+        newElement.startTime = 0;
+      }
     } else {
       newElement.endTime += movedX / singleSecondWidth;
       if (newElement.endTime < element.startTime) {
         newElement.endTime = element.startTime + MIN_DURATION;
+      }
+      if (newElement.endTime > videoProjectData.duration) {
+        newElement.endTime = videoProjectData.duration;
       }
     }
   
