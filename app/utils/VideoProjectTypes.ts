@@ -1,10 +1,12 @@
 export interface VideoProject {
-  name: string;
+  id: string;
+  title: string;
   description: string;
   thumbnail: string;
   duration: number;
   width: number;
   height: number;
+  tracks: Track[];
 }
 
 export interface PlayerStatus {
@@ -53,13 +55,13 @@ export interface BaseElement {
   y: number;
   width: number;
   height: number;
-  transform: Transform;
-  opacity: number;
-  effects: Effect[];
-  mask: Mask;
-  animators: Animator[];
   startTime: number;
   endTime: number;
+  transform?: Transform;
+  opacity?: number;
+  effects?: Effect[];
+  mask?: Mask;
+  animators?: Animator[];
 }
 
 export interface TextElement extends BaseElement {
@@ -102,7 +104,7 @@ export interface ImageElement extends BaseElement {
   type: 'image';
   url: string;
   thumbnailUrl?: string;
-  isGif: boolean;
+  isGif?: boolean;
 }
 
 export interface VideoElement extends BaseElement {

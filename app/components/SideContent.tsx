@@ -59,8 +59,8 @@ export const SideContent = (props: SideContentProps) => {
           <div key={media.id} className={cls.media}>
             <div className={cls.mediaPreview}>
               <img src={media.previewUrl} alt={media.title} />
-              <p className={cls.added}>{media.isAdded ? "Added" : ""}</p>
-              <p className={cls.duration}>{media.duration ? seconds2mmss(media.duration) : ""}</p>
+              {media.isAdded && <p className={cls.added}>{"Added"}</p>}
+              {media.duration && <p className={cls.duration}>{seconds2mmss(media.duration)}</p>}
             </div>
             <p>{media.title}</p>
           </div>
@@ -123,6 +123,7 @@ export function getClasses() {
       height: 90,
       borderRadius: 8,
       background: theme?.baseLow,
+      marginBottom: 4,
       position: "relative",
       "& > img": {
         width: "100%",
