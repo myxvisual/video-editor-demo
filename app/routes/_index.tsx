@@ -12,7 +12,7 @@ const vpData: VideoProject = {
   title: "Project 1",
   description: "Project 1 description",
   thumbnail: "https://picsum.photos/id/237/200/300",
-  duration: 120,
+  duration: 12,
   width: 1280,
   height: 720,
   tracks: [{
@@ -35,7 +35,7 @@ const vpData: VideoProject = {
       y: 0,
       width: 1280,
       height: 720,
-      startTime: 5,
+      startTime: 3,
       endTime: 10,
       url: "https://picsum.photos/id/238/200/300",
     }],
@@ -55,7 +55,7 @@ export const Home = () => {
       <div className={cls.rightSide}>
         <Toolbar />
         <VideoPreview />
-        <TimelineEditor />
+        <TimelineEditor videoProjectData={videoProjectData} setVideoProjectData={setVideoProjectData} />
       </div>
     </div>
   );
