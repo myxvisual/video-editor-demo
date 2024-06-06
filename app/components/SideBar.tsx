@@ -1,5 +1,11 @@
 import { addStyles, theme } from "~/styles/cssManager";
 
+export interface IconButton {
+  icon: string;
+  key: string;
+  description: string;
+}
+
 export interface SideBarProps {}
 
 export const SideBar = (props: SideBarProps) => {
