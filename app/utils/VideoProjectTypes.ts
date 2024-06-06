@@ -50,13 +50,13 @@ export interface Animator {
 
 export interface BaseElement {
   id: string;
-  visible: boolean;
   x: number;
   y: number;
   width: number;
   height: number;
   startTime: number;
   endTime: number;
+  visible?: boolean;
   transform?: Transform;
   opacity?: number;
   effects?: Effect[];

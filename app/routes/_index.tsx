@@ -1,4 +1,7 @@
 import React from "react";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { DndProvider } from "react-dnd";
+
 import SideBar from "~/components/SideBar";
 import SideContent from "~/components/SideContent";
 import TimelineEditor from "~/components/TimelineEditor";
@@ -47,6 +50,7 @@ export const Home = () => {
   const [videoProjectData, setVideoProjectData] = React.useState<VideoProject>(vpData);
 
   return (
+    <DndProvider backend={HTML5Backend}>
     <div className={cls.root}>
       <div className={cls.sides}>
         <SideBar />
@@ -58,6 +62,7 @@ export const Home = () => {
         <TimelineEditor videoProjectData={videoProjectData} setVideoProjectData={setVideoProjectData} />
       </div>
     </div>
+    </DndProvider>
   );
 }
 
