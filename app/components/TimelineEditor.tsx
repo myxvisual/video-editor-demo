@@ -1,6 +1,7 @@
 import { addStyles } from "~/styles/cssManager";
 import { VideoProject } from "~/utils/VideoProjectTypes";
 import TimelineTrack from "./TimelineTrack";
+import TimelineEmptyTrack from "./TimelineEmptyTrack";
 
 export interface TimelineEditorProps {
   videoProjectData: VideoProject;
@@ -13,7 +14,7 @@ export const TimelineEditor = (props: TimelineEditorProps) => {
   return (
     <div className={cls.root}>
       <div className={cls.tracksWrapper}>
-        <div className={cls.emptyTracks} />
+        <TimelineEmptyTrack isTop={true} />
         <div className={cls.tracks}>
           {props.videoProjectData?.tracks?.map((track, trackIndex) => {
             return <TimelineTrack
@@ -25,6 +26,7 @@ export const TimelineEditor = (props: TimelineEditorProps) => {
             />
           })}
         </div>
+        <TimelineEmptyTrack isTop={false} />
       </div>
     </div>
   )
@@ -39,10 +41,11 @@ export function getClasses() {
       borderTop: theme => `1px solid ${theme.baseLow}`,
       padding: "20px 40px",
     },
-    tracksWrapper: {},
-    emptyTracks: {
-      height: 120,
+    tracksWrapper: {
+      height: "100%",
       width: "100%",
+      display: "flex",
+      flexDirection: "column",
     },
     tracks: {
       width: "100%",

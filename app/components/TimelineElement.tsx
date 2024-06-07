@@ -3,7 +3,7 @@ import { addStyles } from "~/styles/cssManager";
 import { VideoProject, PlayerElement } from "~/utils/VideoProjectTypes";
 import { elementTime2style, offsetX2time, setResizeMousedown } from "~/hooks/useResizeElement";
 import { useDrag } from "react-dnd";
-import { DragTypes, DropResult } from "~/routes/DND";
+import { DragTypes, DropResult } from "~/utils/DND";
 
 export interface TimelineElementProps {
   videoProjectData: VideoProject;
