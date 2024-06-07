@@ -1,6 +1,8 @@
 import React from "react";
 
-import { VideoProject, PlyerElement } from "~/utils/VideoProjectTypes";
+import { VideoProject, PlayerElement } from "~/utils/VideoProjectTypes";
+
+export const GLOBAL_TRACK_WRAPPER_ID = "global-track-wrapper";
 
 const MIN_DURATION = 1;
 
@@ -21,8 +23,9 @@ export const setResizeMousedown = (
     if (!e.currentTarget) {
       return;
     }
+    // currentTarget element is handler
     elementEl = (e.currentTarget as HTMLElement)?.parentElement ?? null;
-    trackEl = (e.currentTarget as HTMLElement)?.parentElement?.parentElement ?? null;
+    trackEl = document.querySelector(`#${GLOBAL_TRACK_WRAPPER_ID}`) ?? null;
     startX = e.clientX;
     movedX = 0;
 
@@ -44,11 +47,10 @@ export const setResizeMousedown = (
     }
     document.removeEventListener("mousemove", handleMouseMove);
     document.removeEventListener("mouseup", handleMouseUp);
-
   };
 
 
-  function getNewElement(element: PlyerElement, movedX: number, isStartTime: boolean) {
+  function getNewElement(element: PlayerElement, movedX: number, isStartTime: boolean) {
   [elementIndex];
     const newElement = { ...element };
     const singleSecondWidth = (trackEl?.clientWidth ?? 0) / videoProjectData.duration;
@@ -97,13 +99,17 @@ export const setResizeMousedown = (
   return [handleMouseDown, handleMouseMove, handleMouseUp] as const;
 };
 
+export function offsetX2time(offsetX: number, totalDuration: number) {
+  const trackEl = document.querySelector(`#${GLOBAL_TRACK_WRAPPER_ID}`) ?? null;
+  if (!trackEl) {
+    return 0;
+  }
+  const singleSecondWidth = (trackEl?.clientWidth ?? 0) / totalDuration;
+  
+  return offsetX / singleSecondWidth;
+}
 
-export const useResizeElement = () => {
-};
-
-
-
-export function elementTime2style(element: PlyerElement, totalDuration: number) {
+export function elementTime2style(element: PlayerElement, totalDuration: number) {
   return {
     left: element.startTime / totalDuration * 100 + "%",
     width: (element.endTime - element.startTime) / totalDuration * 100 + "%",

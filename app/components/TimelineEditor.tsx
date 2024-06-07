@@ -1,6 +1,6 @@
-import { elementTime2style, setResizeMousedown } from "~/hooks/useResizeElement";
 import { addStyles } from "~/styles/cssManager";
 import { VideoProject } from "~/utils/VideoProjectTypes";
+import TimelineTrack from "./TimelineTrack";
 
 export interface TimelineEditorProps {
   videoProjectData: VideoProject;
@@ -16,47 +16,13 @@ export const TimelineEditor = (props: TimelineEditorProps) => {
         <div className={cls.emptyTracks} />
         <div className={cls.tracks}>
           {props.videoProjectData?.tracks?.map((track, trackIndex) => {
-            return (
-              <div key={trackIndex} className={cls.track}>
-                {track.elements.map((element, index) => {
-
-                  const [lMouseDown] = setResizeMousedown(
-                    props.videoProjectData,
-                    props.setVideoProjectData,
-                    true,
-                    trackIndex,
-                    index,
-                  );
-
-                  const [rMouseDown] = setResizeMousedown(
-                    props.videoProjectData,
-                    props.setVideoProjectData,
-                    false,
-                    trackIndex,
-                    index,
-                  );
-
-                  return (
-                    <div
-                      key={index}
-                      className={cls.element}
-                      style={elementTime2style(element, props.videoProjectData.duration)}
-                    >
-                      <div
-                        className={cls.handlerL}
-                        onMouseDown={lMouseDown}
-                        role="presentation"
-                      />
-                      <div
-                        className={cls.handlerR}
-                        onMouseDown={rMouseDown}
-                        role="presentation"
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-            )
+            return <TimelineTrack
+              key={trackIndex}
+              videoProjectData={props.videoProjectData}
+              setVideoProjectData={props.setVideoProjectData}
+              track={track}
+              trackIndex={trackIndex}
+            />
           })}
         </div>
       </div>
@@ -80,32 +46,6 @@ export function getClasses() {
     },
     tracks: {
       width: "100%",
-    },
-    track: theme => ({
-      height: 40,
-      width: "100%",
-      background: theme?.listLow,
-      margin: "8px 0",
-      position: "relative",
-    }),
-    element: {
-      background: theme => theme.accent,
-      height: "100%",
-      position: "absolute",
-    },
-    handlerL: {
-      position: "absolute",
-      left: 0,
-      width: 10,
-      height: "100%",
-      background: theme => theme.altMedium,
-    },
-    handlerR: {
-      position: "absolute",
-      right: 0,
-      width: 10,
-      height: "100%",
-      background: theme => theme.altMedium,
     },
   });
 

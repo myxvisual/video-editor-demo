@@ -16,10 +16,10 @@ export interface PlayerStatus {
 }
 
 export interface Track {
-  elements: PlyerElement[];
+  elements: PlayerElement[];
 }
 
-export type PlyerElement = TextElement | VideoElement | AudioElement | ImageElement | ShapeElement;
+export type PlayerElement = TextElement | VideoElement | AudioElement | ImageElement | ShapeElement;
 
 export interface Transform {
   rotate: number;

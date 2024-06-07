@@ -15,7 +15,7 @@ const vpData: VideoProject = {
   title: "Project 1",
   description: "Project 1 description",
   thumbnail: "https://picsum.photos/id/237/200/300",
-  duration: 12,
+  duration: 30,
   width: 1280,
   height: 720,
   tracks: [{
