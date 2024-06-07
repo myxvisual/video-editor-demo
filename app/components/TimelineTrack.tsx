@@ -2,7 +2,7 @@ import * as React from "react";
 import { addStyles } from "~/styles/cssManager";
 import { VideoProject } from "~/utils/VideoProjectTypes";
 import TimelineElement from "./TimelineElement";
-import { GLOBAL_TRACK_WRAPPER_ID } from "~/hooks/useResizeElement";
+import { GLOBAL_TRACK_WRAPPER_ID } from "~/utils/resizeElement";
 import { useTrackDrop } from "~/hooks/useTrackDrop";
 
 export interface TimelineTrackProps {

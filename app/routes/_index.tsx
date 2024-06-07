@@ -64,7 +64,10 @@ export const Home = () => {
     <div className={cls.root}>
       <div className={cls.sides}>
         <SideBar />
-        <SideContent />
+        <SideContent
+          videoProjectData={videoProjectData}
+          setVideoProjectData={setVideoProjectData}
+        />
       </div>
       <div className={cls.rightSide}>
         <Toolbar />

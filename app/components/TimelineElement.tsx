@@ -1,9 +1,10 @@
 import React from "react";
 import { addStyles } from "~/styles/cssManager";
+import { elementTime2style, setResizeMousedown } from "~/utils/resizeElement";
+
 import { VideoProject, PlayerElement } from "~/utils/VideoProjectTypes";
-import { elementTime2style, offsetX2time, setResizeMousedown } from "~/hooks/useResizeElement";
-import { useDrag } from "react-dnd";
-import { DragTypes, DropResult } from "~/utils/DND";
+import { useElementDrag } from "~/hooks/useElementDrag";
+import { DragTypes } from "~/utils/DND";
 
 export interface TimelineElementProps {
   videoProjectData: VideoProject;
@@ -25,10 +26,6 @@ export const TimelineElement = (props: TimelineElementProps) => {
     elementIndex,
   } = props;
 
-  const startRectRef = React.useRef<{ x: number; y: number }>({
-    x: 0,
-    y: 0,
-  });
   const [lMouseDown] = setResizeMousedown(
     videoProjectData,
     setVideoProjectData,
@@ -44,89 +41,18 @@ export const TimelineElement = (props: TimelineElementProps) => {
     trackIndex,
     elementIndex,
   );
-
-  const [{ isDragging }, drag] = useDrag(() => ({
+  const [handleDragStart, drag] = useElementDrag(videoProjectData, setVideoProjectData, {
     type: DragTypes.TimelineElement,
-    item: {},
-    end: (item, monitor) => {
-      const dropResult = monitor.getDropResult() as DropResult;
-
-      if (dropResult) {
-        const toTrackIndex = dropResult?.toTrackIndex ?? 0;
-        const newVideoProject = {
-          ...videoProjectData,
-          tracks: [...videoProjectData.tracks.map((track) => {
-            if (track.elements.length === 0) {
-              return track;
-            }
-            return {
-              ...track,
-              elements: [...track.elements],
-            };
-          })],
-        };
-        const offsetX = (dropResult?.position?.x ?? 0) - startRectRef.current.x;
-
-        let targetTrack = newVideoProject.tracks[toTrackIndex];
-        if (toTrackIndex < 0) {
-          targetTrack = {
-            elements: [],
-          };
-        }
-        if (toTrackIndex >= newVideoProject.tracks.length) {
-          targetTrack = {
-            elements: [],
-          };
-        }
-
-        const currentTrack = newVideoProject.tracks[trackIndex];
-        
-        const element = currentTrack.elements[elementIndex];
-        const startTimeOffset = offsetX2time(offsetX, newVideoProject.duration);
-        element.startTime += startTimeOffset;
-        element.endTime += startTimeOffset;
-        targetTrack.elements.push(element);
-
-        currentTrack.elements.splice(elementIndex, 1);
-        if (currentTrack.elements.length === 0) {
-          newVideoProject.tracks.splice(trackIndex, 1);
-        }
-
-        if (toTrackIndex < 0) {
-          newVideoProject.tracks.unshift(targetTrack);
-        }
-        if (toTrackIndex >= newVideoProject.tracks.length) {
-          newVideoProject.tracks.push(targetTrack);
-        }
-
-        setVideoProjectData({
-          ...newVideoProject,
-          tracks: [...newVideoProject.tracks],
-        });
-      }
-    },
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
-      handlerId: monitor.getHandlerId(),
-    }),
-  }), [
-    videoProjectData,
-    setVideoProjectData,
-    trackIndex,
-    elementIndex,
-  ]);
+    currTrackIndex: trackIndex,
+    currElementIndex: elementIndex,
+  });
 
   return (
     <div
       className={cls.root}
       style={elementTime2style(element, videoProjectData.duration)}
       ref={drag}
-      onDragStart={(e) => {
-        startRectRef.current = {
-          x: e.clientX,
-          y: e.clientY,
-        };
-      }}
+      onDragStart={handleDragStart}
     >
       <div
         className={cls.handlerL}

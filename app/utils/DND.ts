@@ -10,5 +10,5 @@ export interface DropResult {
     x: number;
     y: number;
   };
-  toTrackIndex?: number;
+  targetTrackIndex?: number;
 }

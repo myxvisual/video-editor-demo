@@ -1,5 +1,3 @@
-import React from "react";
-
 import { VideoProject, PlayerElement } from "~/utils/VideoProjectTypes";
 
 export const GLOBAL_TRACK_WRAPPER_ID = "global-track-wrapper";
@@ -14,9 +12,9 @@ export const setResizeMousedown = (
   elementIndex: number,
 ) => {
   let startX = 0;
-  let movedX = 0;
+  let offsetX = 0;
   let elementEl: HTMLElement | null = null;
-  let trackEl: HTMLElement | null = null;
+  let trackWrapperEl: HTMLElement | null = null;
 
   const handleMouseDown = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -25,37 +23,37 @@ export const setResizeMousedown = (
     }
     // currentTarget element is handler
     elementEl = (e.currentTarget as HTMLElement)?.parentElement ?? null;
-    trackEl = document.querySelector(`#${GLOBAL_TRACK_WRAPPER_ID}`) ?? null;
+    trackWrapperEl = document.querySelector(`#${GLOBAL_TRACK_WRAPPER_ID}`) ?? null;
     startX = e.clientX;
-    movedX = 0;
+    offsetX = 0;
 
     document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseup", handleMouseUp);
   };
 
   const handleMouseMove = (e: MouseEvent) => {
-    movedX = e.clientX - startX;
-    if (trackEl) {
-      handleChange?.(movedX);
+    offsetX = e.clientX - startX;
+    if (trackWrapperEl) {
+      handleChange?.(offsetX);
     }
   };
 
   const handleMouseUp = (e: MouseEvent) => {
-    movedX = e.clientX - startX;
-    if (trackEl) {
-      handleChanged?.(movedX);
+    offsetX = e.clientX - startX;
+    if (trackWrapperEl) {
+      handleChanged?.(offsetX);
     }
     document.removeEventListener("mousemove", handleMouseMove);
     document.removeEventListener("mouseup", handleMouseUp);
   };
 
 
-  function getNewElement(element: PlayerElement, movedX: number, isStartTime: boolean) {
+  function getNewElementByOffsetX(element: PlayerElement, offsetX: number, isStartTime: boolean) {
   [elementIndex];
     const newElement = { ...element };
-    const singleSecondWidth = (trackEl?.clientWidth ?? 0) / videoProjectData.duration;
+    const singleSecondWidth = (trackWrapperEl?.clientWidth ?? 0) / videoProjectData.duration;
     if (isStartTime) {
-      newElement.startTime += movedX / singleSecondWidth; 
+      newElement.startTime += offsetX / singleSecondWidth; 
       if (newElement.startTime > element.endTime) {
         newElement.startTime = element.endTime - MIN_DURATION;
       }
@@ -63,7 +61,7 @@ export const setResizeMousedown = (
         newElement.startTime = 0;
       }
     } else {
-      newElement.endTime += movedX / singleSecondWidth;
+      newElement.endTime += offsetX / singleSecondWidth;
       if (newElement.endTime < element.startTime) {
         newElement.endTime = element.startTime + MIN_DURATION;
       }
@@ -75,9 +73,9 @@ export const setResizeMousedown = (
     return newElement;
   }
 
-  function handleChange(movedX: number) {
+  function handleChange(offsetX: number) {
     const element = videoProjectData.tracks[trackIndex].elements[elementIndex];
-    const newElement = getNewElement(element, movedX, isStartTime);
+    const newElement = getNewElementByOffsetX(element, offsetX, isStartTime);
     const newStyle = elementTime2style(newElement, videoProjectData.duration);
 
     if (elementEl) {
@@ -85,9 +83,9 @@ export const setResizeMousedown = (
     }
   }
 
-  function handleChanged(movedX: number) {
+  function handleChanged(offsetX: number) {
     const element = videoProjectData.tracks[trackIndex].elements[elementIndex];
-    const newElement = getNewElement(element, movedX, isStartTime);
+    const newElement = getNewElementByOffsetX(element, offsetX, isStartTime);
     const tracks = videoProjectData.tracks;
     tracks[trackIndex].elements[elementIndex] = { ...newElement };
     setVideoProjectData({
@@ -105,7 +103,7 @@ export function offsetX2time(offsetX: number, totalDuration: number) {
     return 0;
   }
   const singleSecondWidth = (trackEl?.clientWidth ?? 0) / totalDuration;
-  
+
   return offsetX / singleSecondWidth;
 }
 

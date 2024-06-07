@@ -2,7 +2,7 @@ import * as React from "react";
 import { useDrop } from "react-dnd";
 import { DragTypes, DropResult } from "~/utils/DND";
 
-export function useTrackDrop(toTrackIndex: number) {
+export function useTrackDrop(targetTrackIndex: number) {
   const positionRef = React.useRef<{ x: number; y: number }>({
     x: 0,
     y: 0,
@@ -25,7 +25,7 @@ export function useTrackDrop(toTrackIndex: number) {
       return {
         dropped: true,
         position: positionRef.current,
-        toTrackIndex: toTrackIndex,
+        targetTrackIndex,
       } as DropResult;
     },
     collect: (monitor) => {
@@ -34,7 +34,7 @@ export function useTrackDrop(toTrackIndex: number) {
         canDrop: monitor.canDrop(),
       };
     },
-  }), [toTrackIndex]);
+  }), [targetTrackIndex]);
 
   const isDragOver = canDrop && isOver;
 

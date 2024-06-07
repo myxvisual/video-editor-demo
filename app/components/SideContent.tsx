@@ -1,21 +1,15 @@
 import { addStyles } from "~/styles/cssManager";
 import Icon from "./Icon";
 import IconButton from "./IconButton";
-import { seconds2mmss } from "~/utils/seconds2mmss";
+import SideContentElement, { SideContentElementProps } from "./SideContentElement";
+import { VideoProject } from "~/utils/VideoProjectTypes";
 
-export interface SideContentProps {}
-
-export interface MediaData {
-  id: string;
-  title: string;
-  previewUrl: string;
-  isAdded: boolean;
-  // seconds
-  duration?: number;
-  
+export interface SideContentProps {
+  videoProjectData: VideoProject,
+  setVideoProjectData: React.Dispatch<React.SetStateAction<VideoProject>>
 }
 
-const medias: MediaData[] = [{
+const medias: SideContentElementProps[] = [{
   id: "media-1",
   title: "Media 1",
   previewUrl: "https://picsum.photos/id/237/200/300",
@@ -56,14 +50,12 @@ export const SideContent = (props: SideContentProps) => {
       </div>
       <div className={cls.resources}>
         {medias.map(media => (
-          <div key={media.id} className={cls.media}>
-            <div className={cls.mediaPreview}>
-              <img src={media.previewUrl} alt={media.title} />
-              {media.isAdded && <p className={cls.added}>{"Added"}</p>}
-              {media.duration && <p className={cls.duration}>{seconds2mmss(media.duration)}</p>}
-            </div>
-            <p>{media.title}</p>
-          </div>
+          <SideContentElement
+            key={media.id}
+            {...media}
+            videoProjectData={props.videoProjectData}
+            setVideoProjectData={props.setVideoProjectData}
+          />
         ))}
       </div>
     </div>
@@ -114,40 +106,6 @@ export function getClasses() {
       alignItems: "center",
       justifyContent: "space-between",
       flexWrap: "wrap",
-    },
-    media: {
-      marginBottom: 12,
-    },
-    mediaPreview: theme => ({
-      width: 130,
-      height: 90,
-      borderRadius: 8,
-      background: theme?.baseLow,
-      marginBottom: 4,
-      position: "relative",
-      "& > img": {
-        width: "100%",
-        height: "100%",
-        objectFit: "contain",
-      } as React.CSSProperties,
-    }),
-    duration: {
-      position: "absolute",
-      fontSize: 12,
-      left: 8,
-      bottom: 8,
-      padding: "2px 4px",
-      borderRadius: 4,
-      background: theme => theme.altMedium,
-    },
-    added: {
-      position: "absolute",
-      fontSize: 12,
-      left: 8,
-      top: 8,
-      padding: "2px 4px",
-      borderRadius: 4,
-      background: theme => theme.altMedium,
     },
   });
 
