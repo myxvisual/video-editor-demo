@@ -14,7 +14,7 @@ export const TimelineEditor = (props: TimelineEditorProps) => {
   return (
     <div className={cls.root}>
       <div className={cls.tracksWrapper}>
-        <TimelineEmptyTrack isTop={true} />
+        <TimelineEmptyTrack isTop={true} tracksLength={props.videoProjectData?.tracks?.length ?? 0} />
         <div className={cls.tracks}>
           {props.videoProjectData?.tracks?.map((track, trackIndex) => {
             return <TimelineTrack
@@ -26,7 +26,7 @@ export const TimelineEditor = (props: TimelineEditorProps) => {
             />
           })}
         </div>
-        <TimelineEmptyTrack isTop={false} />
+        <TimelineEmptyTrack isTop={false} tracksLength={props.videoProjectData?.tracks?.length ?? 0} />
       </div>
     </div>
   )

@@ -34,7 +34,7 @@ export function useTrackDrop(toTrackIndex: number) {
         canDrop: monitor.canDrop(),
       };
     },
-  }));
+  }), [toTrackIndex]);
 
   const isDragOver = canDrop && isOver;
 
