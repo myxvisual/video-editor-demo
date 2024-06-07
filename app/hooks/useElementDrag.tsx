@@ -40,11 +40,13 @@ export function useElementDrag(
         };
         const currElement: PlayerElement = isTimelineElement ? newVideoProject.tracks[elementData.currTrackIndex].elements[elementData.currElementIndex] : elementData.newElement;
     
+        // calculate element start and end time
         if (isTimelineElement) {
           const offsetX = (dropResult?.position?.x ?? 0) - startRectRef.current.x;
 
           const startTimeOffset = offsetX2time(offsetX, newVideoProject.duration);
-          currElement.startTime += startTimeOffset;
+          const newStartTime = currElement.startTime + startTimeOffset;
+          currElement.startTime = newStartTime;
           currElement.endTime += startTimeOffset;
         } else {
           const trackWrapperEl = document.querySelector(`#${GLOBAL_TRACK_WRAPPER_ID}`);
@@ -57,6 +59,18 @@ export function useElementDrag(
           }
         }
 
+        // check bounds, fit in time range.
+        const duration = currElement.endTime - currElement.startTime;
+        if (currElement.endTime > newVideoProject.duration) {
+          currElement.endTime = newVideoProject.duration;
+          currElement.startTime = currElement.endTime - duration;
+        }
+        if (currElement.startTime < 0) {
+          currElement.startTime = 0;
+          currElement.endTime = duration;
+        }
+
+        // if target track is empty, create a new track
         let targetTrack: VideoProject["tracks"][0];
         if (targetTrackIndex < 0 || targetTrackIndex >= newVideoProject.tracks.length) {
           targetTrack = {
@@ -66,13 +80,15 @@ export function useElementDrag(
           targetTrack = newVideoProject.tracks[targetTrackIndex];
         }
 
-
+        // add element
         targetTrack.elements.push(currElement);
 
+        // remove element
         if (isTimelineElement) {
           newVideoProject.tracks[elementData.currTrackIndex].elements.splice(elementData.currElementIndex, 1);
         }
 
+        // add track to project
         if (targetTrackIndex < 0) {
           newVideoProject.tracks.unshift(targetTrack);
         }
@@ -80,6 +96,7 @@ export function useElementDrag(
           newVideoProject.tracks.push(targetTrack);
         }
 
+        // update project
         setVideoProjectData({
           ...newVideoProject,
           tracks: [...newVideoProject.tracks.filter((track) => track.elements.length > 0)],
